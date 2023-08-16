@@ -4,6 +4,7 @@ const pencilTool = document.getElementsByClassName("pencil-tool")[0];
 const eraserTool = document.getElementsByClassName("eraser-tool")[0];
 const stickyNoteTool = document.getElementsByClassName("stickynote-tool")[0];
 const stickyNote = document.getElementsByClassName("sticky-note")[0];
+const uploadTool = document.getElementsByClassName("upload-tool")[0];
 let pencilToolState = false;
 let eraserToolState = false;
 
@@ -12,27 +13,31 @@ const createStcikyNote = (img = "") => {
   stickyNote.classList.add("sticky-note");
   stickyNote.innerHTML = `
   <div class="sticky-note-header">
-
   <button class="sticky-note-minimise"></button>
   <button class="sticky-note-close"></button>
 </div>
-<textarea
-  class="sticky-note-text"
-  spellcheck="false"
-  name="sticky-note"
-  id="sticky-note"
-  cols="30"
-  rows="10"
-  placeholder="Enter your text here"
-></textarea>
+${
+  img
+    ? `<img src="${img}" alt="sticky-note-img" class="sticky-note-img">`
+    : `<textarea
+class="sticky-note-text"
+spellcheck="false"
+name="sticky-note"
+id="sticky-note"
+cols="30"
+rows="10"
+placeholder="Enter your text here"
+></textarea>`
+}
+
       `;
   document.body.append(stickyNote);
   stickyNote.addEventListener("mousedown", (event) => {
-    if(event.target.classList.contains("sticky-note-minimise")){
+    if (event.target.classList.contains("sticky-note-minimise")) {
       stickyNote.children[1].classList.toggle("sticky-note-minimised");
       return;
     }
-    if(event.target.classList.contains("sticky-note-close")){
+    if (event.target.classList.contains("sticky-note-close")) {
       stickyNote.remove();
       return;
     }
@@ -90,4 +95,16 @@ eraserTool.addEventListener("click", (e) => {
 
 stickyNoteTool.addEventListener("click", () => {
   createStcikyNote();
+});
+
+uploadTool.addEventListener("click", () => {
+  const uploadInput = document.createElement("input");
+  uploadInput.type = "file";
+  uploadInput.accept = "image/*";
+  uploadInput.click();
+  uploadInput.addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    const imgSrc = URL.createObjectURL(file);
+    createStcikyNote(imgSrc);
+  });
 });
