@@ -4,7 +4,12 @@ const downloadCanvas = document.querySelector(".download-tool")
 const canvas = document.getElementsByTagName("canvas")[0];
 canvas.height = window.innerHeight;
 canvas.width = window.innerWidth;
+
 const ctx = canvas.getContext("2d");
+ctx.beginPath()
+ctx.fillStyle = "white";
+ctx.fillRect(0, 0, canvas.width, canvas.height);
+
 
 const penState = {
   strokeStyle: "red",
@@ -72,7 +77,7 @@ function resetCursor() {
 
 downloadCanvas.addEventListener("click",()=>{
   const a = document.createElement("a");
-  a.href = canvas.toDataURL();
+  a.href = canvas.toDataURL("image/jpeg");
   a.download = "open board";
   a.click();
 })
