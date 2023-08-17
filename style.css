@@ -160,3 +160,10 @@ body {
   border: none;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
+
+canvas{
+  position: absolute;
+  top:0;
+  left:0;
+  z-index: -1;
+}

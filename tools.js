@@ -7,6 +7,7 @@ const stickyNote = document.getElementsByClassName("sticky-note")[0];
 const uploadTool = document.getElementsByClassName("upload-tool")[0];
 let pencilToolState = false;
 let eraserToolState = false;
+let eraseFlag = false;
 
 const createStcikyNote = (img = "") => {
   const stickyNote = document.createElement("div");
@@ -87,6 +88,7 @@ pencilTool.addEventListener("click", () => {
 });
 
 eraserTool.addEventListener("click", (e) => {
+  eraseFlag = !eraseFlag;
   eraserToolState = !eraserToolState;
   eraserTool.nextElementSibling.style.display = eraserToolState
     ? "block"
