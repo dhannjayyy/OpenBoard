@@ -5,7 +5,7 @@ const downloadCanvas = document.querySelector(".download-tool");
 const canvas = document.getElementsByTagName("canvas")[0];
 canvas.height = window.innerHeight;
 canvas.width = window.innerWidth;
-let eraserSize;
+let eraserSize = 3;
 
 const ctx = canvas.getContext("2d");
 ctx.beginPath();

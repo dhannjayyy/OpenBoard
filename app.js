@@ -18,13 +18,14 @@ io.on("connection", (socket) => {
     });
 
     socket.on("drawline", (data) => {
+        console.log(data);
         io.sockets.emit("drawline", data);
     })
 
     socket.on("undo", (data) => {
         io.sockets.emit("undo", data)
     })
-    
+
     socket.on("redo", (data) => {
         io.sockets.emit("redo", data)
     })
