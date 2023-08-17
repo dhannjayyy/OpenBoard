@@ -36,22 +36,21 @@ ctx.lineWidth = 3;
 userPencilAttributes.addEventListener("click", (e) => {
   if (eraseFlag) eraserTool.click();
   if (e.target.tagName === "INPUT")
-  penStateMaintainer({ width: e.target.value });
+    penStateMaintainer({ width: e.target.value });
   else if (
     e.target.tagName === "DIV" &&
     e.target.classList.contains("pencil-color")
-    )
+  )
     penStateMaintainer({ strokeStyle: e.target.classList[0] });
 });
 
 userEraser.addEventListener("change", (e) => {
   eraserSize = e.target.value;
-})
+});
 
 canvas.addEventListener("mousedown", (e) => {
   socket.emit("beginPath", { x: e.clientX, y: e.clientY });
 });
-
 canvas.addEventListener("mousemove", (e) => {
   if (!drawFlag) return;
   socket.emit("drawline", {
@@ -63,7 +62,9 @@ canvas.addEventListener("mousemove", (e) => {
   });
 });
 
-canvas.addEventListener("mouseup", resetCursor);
+canvas.addEventListener("mouseup", () => {
+  socket.emit("resetCursor");
+});
 
 function beginPath(coords) {
   drawFlag = true;
@@ -103,4 +104,8 @@ socket.on("beginPath", (coords) => {
 
 socket.on("drawline", (data) => {
   drawline(data);
+});
+
+socket.on("resetCursor", () => {
+  resetCursor();
 });

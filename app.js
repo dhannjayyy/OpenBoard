@@ -18,7 +18,6 @@ io.on("connection", (socket) => {
     });
 
     socket.on("drawline", (data) => {
-        console.log(data);
         io.sockets.emit("drawline", data);
     })
 
@@ -28,5 +27,9 @@ io.on("connection", (socket) => {
 
     socket.on("redo", (data) => {
         io.sockets.emit("redo", data)
+    })
+
+    socket.on("resetCursor", () => {
+        io.sockets.emit("resetCursor")
     })
 })
