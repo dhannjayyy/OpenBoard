@@ -1,9 +1,9 @@
+/* eslint-disable no-undef */
 const hamburger = document.querySelector(".hamburger-cont");
 const toolsContainer = document.querySelector(".tools-cont");
 const pencilTool = document.getElementsByClassName("pencil-tool")[0];
 const eraserTool = document.getElementsByClassName("eraser-tool")[0];
 const stickyNoteTool = document.getElementsByClassName("stickynote-tool")[0];
-const stickyNote = document.getElementsByClassName("sticky-note")[0];
 const uploadTool = document.getElementsByClassName("upload-tool")[0];
 const undoTool = document.getElementsByClassName("undo-tool")[0];
 const redoTool = document.getElementsByClassName("redo-tool")[0];
@@ -118,12 +118,12 @@ uploadTool.addEventListener("click", () => {
 
 undoTool.addEventListener("click", () => {
   if (undoRedoIndex <= 0) return;
-  undoRedoOperator("undo");
+  socket.emit("undo", {undoRedoTracker,undoRedoIndex})
 });
 
 redoTool.addEventListener("click", () => {
   if (undoRedoIndex >= undoRedoTracker.length - 1) return;
-  undoRedoOperator("redo");
+  socket.emit("redo", {undoRedoTracker,undoRedoIndex})
 });
 
 function undoRedoOperator(operation) {
@@ -135,3 +135,15 @@ function undoRedoOperator(operation) {
     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
   };
 }
+
+socket.on("undo",(data)=>{
+  undoRedoTracker = data.undoRedoTracker;
+  undoRedoIndex = data.undoRedoIndex;
+  undoRedoOperator("undo");
+})
+
+socket.on("redo",(data)=>{
+  undoRedoTracker = data.undoRedoTracker;
+  undoRedoIndex = data.undoRedoIndex;
+  undoRedoOperator("redo");
+})

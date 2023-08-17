@@ -1,16 +1,17 @@
+/* eslint-disable no-undef */
 const userPencilAttributes = document.querySelector(".pencil-attributes");
-const userEraserAttributes = document.querySelector(".eraser-width");
-const downloadCanvas = document.querySelector(".download-tool")
+const userEraser = document.querySelector(".eraser-width");
+const downloadCanvas = document.querySelector(".download-tool");
 const canvas = document.getElementsByTagName("canvas")[0];
 canvas.height = window.innerHeight;
 canvas.width = window.innerWidth;
+let eraserSize;
 
 const ctx = canvas.getContext("2d");
-ctx.beginPath()
+ctx.beginPath();
 ctx.fillStyle = "white";
 ctx.fillRect(0, 0, canvas.width, canvas.height);
 undoRedoTracker.push(canvas.toDataURL());
-
 
 const penState = {
   strokeStyle: "red",
@@ -33,22 +34,33 @@ ctx.strokeStyle = "red";
 ctx.lineWidth = 3;
 
 userPencilAttributes.addEventListener("click", (e) => {
+  if (eraseFlag) eraserTool.click();
   if (e.target.tagName === "INPUT")
-    penStateMaintainer({ width: e.target.value });
+  penStateMaintainer({ width: e.target.value });
   else if (
     e.target.tagName === "DIV" &&
     e.target.classList.contains("pencil-color")
-  )
+    )
     penStateMaintainer({ strokeStyle: e.target.classList[0] });
 });
 
+userEraser.addEventListener("change", (e) => {
+  eraserSize = e.target.value;
+})
+
 canvas.addEventListener("mousedown", (e) => {
-  beginPath({ x: e.clientX, y: e.clientY });
+  socket.emit("beginPath", { x: e.clientX, y: e.clientY });
 });
 
 canvas.addEventListener("mousemove", (e) => {
   if (!drawFlag) return;
-  drawline({ x: e.clientX, y: e.clientY });
+  socket.emit("drawline", {
+    x: e.clientX,
+    y: e.clientY,
+    eraseFlag,
+    penState,
+    eraserSize,
+  });
 });
 
 canvas.addEventListener("mouseup", resetCursor);
@@ -59,14 +71,14 @@ function beginPath(coords) {
   ctx.moveTo(coords.x, coords.y);
 }
 
-function drawline(coords) {
-  ctx.lineTo(coords.x, coords.y);
-  if (eraseFlag) {
+function drawline(data) {
+  ctx.lineTo(data.x, data.y);
+  if (data.eraseFlag) {
     ctx.strokeStyle = "white";
-    ctx.lineWidth = userEraserAttributes.value;
-  } else{
-    ctx.strokeStyle = penState.strokeStyle
-    ctx.lineWidth = penState.width
+    ctx.lineWidth = data.eraserSize;
+  } else {
+    ctx.strokeStyle = data.penState.strokeStyle;
+    ctx.lineWidth = data.penState.width;
   }
   ctx.stroke();
 }
@@ -78,9 +90,17 @@ function resetCursor() {
   ctx.beginPath();
 }
 
-downloadCanvas.addEventListener("click",()=>{
+downloadCanvas.addEventListener("click", () => {
   const a = document.createElement("a");
   a.href = canvas.toDataURL("image/jpeg");
   a.download = "open board";
   a.click();
-})
+});
+
+socket.on("beginPath", (coords) => {
+  beginPath(coords);
+});
+
+socket.on("drawline", (data) => {
+  drawline(data);
+});
