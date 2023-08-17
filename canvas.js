@@ -1,5 +1,6 @@
 const userPencilAttributes = document.querySelector(".pencil-attributes");
 const userEraserAttributes = document.querySelector(".eraser-width");
+const downloadCanvas = document.querySelector(".download-tool")
 const canvas = document.getElementsByTagName("canvas")[0];
 canvas.height = window.innerHeight;
 canvas.width = window.innerWidth;
@@ -68,3 +69,10 @@ function resetCursor() {
   drawFlag = false;
   ctx.beginPath();
 }
+
+downloadCanvas.addEventListener("click",()=>{
+  const a = document.createElement("a");
+  a.href = canvas.toDataURL();
+  a.download = "open board";
+  a.click();
+})
