@@ -5,9 +5,14 @@ const eraserTool = document.getElementsByClassName("eraser-tool")[0];
 const stickyNoteTool = document.getElementsByClassName("stickynote-tool")[0];
 const stickyNote = document.getElementsByClassName("sticky-note")[0];
 const uploadTool = document.getElementsByClassName("upload-tool")[0];
+const undoTool = document.getElementsByClassName("undo-tool")[0];
+const redoTool = document.getElementsByClassName("redo-tool")[0];
 let pencilToolState = false;
 let eraserToolState = false;
 let eraseFlag = false;
+
+let undoRedoTracker = [];
+let undoRedoIndex = 0;
 
 const createStcikyNote = (img = "") => {
   const stickyNote = document.createElement("div");
@@ -110,3 +115,23 @@ uploadTool.addEventListener("click", () => {
     createStcikyNote(imgSrc);
   });
 });
+
+undoTool.addEventListener("click", () => {
+  if (undoRedoIndex <= 0) return;
+  undoRedoOperator("undo");
+});
+
+redoTool.addEventListener("click", () => {
+  if (undoRedoIndex >= undoRedoTracker.length - 1) return;
+  undoRedoOperator("redo");
+});
+
+function undoRedoOperator(operation) {
+  operation === "undo" ? undoRedoIndex-- : undoRedoIndex++;
+  const img = new Image();
+  img.src = undoRedoTracker[undoRedoIndex];
+  img.onload = () => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+  };
+}

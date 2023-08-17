@@ -9,6 +9,7 @@ const ctx = canvas.getContext("2d");
 ctx.beginPath()
 ctx.fillStyle = "white";
 ctx.fillRect(0, 0, canvas.width, canvas.height);
+undoRedoTracker.push(canvas.toDataURL());
 
 
 const penState = {
@@ -71,6 +72,8 @@ function drawline(coords) {
 }
 
 function resetCursor() {
+  undoRedoTracker.push(canvas.toDataURL());
+  undoRedoIndex++;
   drawFlag = false;
   ctx.beginPath();
 }
