@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link type="text/css" rel="stylesheet" href="./style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+      integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <title>Openboard_clone</title>
+  </head>
+  <body>
+    <div class="menu-container">
+      <div class="hamburger-cont">
+        <i class="fa-solid fa-bars hamburger-icon"></i>
+      </div>
+      <div class="tools-cont">
+        <div class="pencil-tool-cont">
+          <img class="pencil-tool tool-icon" src="./icons/pencil.svg" />
+          <div class="pencil-attributes">
+            <div class="pencil-width-cont">
+              <input type="range" value="3" min="2" max="10" />
+            </div>
+            <div class="pencil-color-cont">
+              <div class="black pencil-color"></div>
+              <div class="blue pencil-color"></div>
+              <div class="red pencil-color"></div>
+            </div>
+          </div>
+        </div>
+        <div class="eraser-tool-cont">
+          <img class="eraser-tool tool-icon" src="./icons/eraser.svg" />
+          <div class="eraser-width-cont">
+            <input class="eraser-width" type="range" value="3" min="2" max="10" />
+          </div>
+        </div>
+        <img class="undo-tool tool-icon" src="./icons/undo.svg" />
+        <img class="redo-tool tool-icon" src="./icons/redo.svg" />
+        <img class="upload-tool tool-icon" src="./icons/upload.svg" />
+        <img class="download-tool tool-icon" src="./icons/download.svg" />
+        <img class="stickynote-tool tool-icon" src="./icons/sticky-note.svg" />
+      </div>
+    </div>
+    <canvas></canvas>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js" integrity="sha512-zoJXRvW2gC8Z0Xo3lBbao5+AS3g6YWr5ztKqaicua11xHo+AvE1b0lT9ODgrHTmNUxeCw0Ry4BGRYZfXu70weg==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    </script>
+    <script>
+      // const socket = io.connect("http://localhost:5000/");
+      const socket = io.connect("https://open-board-tylh.onrender.com/");
+    </script>
+    <script src="./tools.js"></script>
+    <script src="./canvas.js"></script>
+  </body>
+</html>
