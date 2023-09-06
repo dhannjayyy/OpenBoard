@@ -1,4 +1,3 @@
-const functions = require("firebase-functions");
 const express = require("express");
 const socket = require("socket.io");
 
@@ -6,7 +5,6 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 app.use(express.static("public"));
-
 const server = app.listen(port);
 
 const io = socket(server);
@@ -35,4 +33,3 @@ io.on("connection", (socket) => {
   });
 });
 
-exports.server = functions.https.onRequest(app);
